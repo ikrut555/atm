@@ -1,0 +1,577 @@
+from tkinter import *
+from tkinter import ttk
+import random
+import tkinter.messagebox as mb
+
+money=random.randint(1000,30000) #случайное количество денег на счету до начала использования банкомата
+ticket=random.randint(0,3) #случайное количество штрафов по 1000 рублей до начала использования банкомата
+promo_use=0 #сколько раз использован промокод
+
+
+root = Tk()
+frame2 = Frame(root,width = 500, height = 300)
+frame2.grid(row=0,column=0)
+frame3 = Frame(root,width =500, height = 300)
+frame3.grid(row=1,column=0)
+frame4 = Frame(frame2,width = 100, height = 250)
+frame4.grid(row=0,column=0)
+frame5 = Frame(frame2,width = 750, height = 350,bd=10, relief=GROOVE)
+frame5.grid(row=0,column=1)
+frame6 = Frame(frame2,width = 100, height = 250)
+frame6.grid(row=0,column=2,sticky=E)
+
+minus=PhotoImage(file="yel.png")
+plus=PhotoImage(file="plus.png")
+cancel=PhotoImage(file="can.png")
+enter=PhotoImage(file="ent.png")
+clear=PhotoImage(file="cler.png")
+empty=PhotoImage(file="emp.png")
+i1=PhotoImage(file="o.png")
+i2=PhotoImage(file="2.png")
+i3=PhotoImage(file="3.png")
+i4=PhotoImage(file="4.png")
+i5=PhotoImage(file="5.png")
+i6=PhotoImage(file="6.png")
+i7=PhotoImage(file="7.png")
+i8=PhotoImage(file="8.png")
+i9=PhotoImage(file="9.png")
+i0=PhotoImage(file="0.png")
+rarrow=PhotoImage(file="rar2.png")
+larrow=PhotoImage(file="lar2.png")
+den=PhotoImage(file="den.png")
+bez=PhotoImage(file="bez.png")
+card=PhotoImage(file="tt2.png")
+pust=PhotoImage(file="pust.png")
+take=PhotoImage(file="take.png")
+
+enter1=Entry(frame5,width=50,justify=CENTER)
+enter1.grid(row=2,column=2, padx=5, pady=5)
+def text_off():
+    label1=Label(frame5,text="",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="",height=4,width=25)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    label3=Label(frame5,text="",height=4,width=25)
+    label3.grid(row=3,column=1, padx=5, pady=5)
+    label4=Label(frame5,text="",height=4,width=25)
+    label4.grid(row=4,column=1, padx=5, pady=5)
+    label5=Label(frame5,text="",height=4,width=25)
+    label5.grid(row=1,column=3, padx=5, pady=5)
+    label6=Label(frame5,text="",height=4,width=25)
+    label6.grid(row=2,column=3, padx=5, pady=5)
+    label7=Label(frame5,text="",height=4,width=25)
+    label7.grid(row=3,column=3, padx=5, pady=5)
+    label8=Label(frame5,text="",height=5,width=25)
+    label8.grid(row=4,column=3, padx=5, pady=5)
+text_off()
+
+label9=Label(frame5,height=5,width=30,text="Введите pin: ")
+label9.grid(row=1,column=2, padx=5, pady=5)
+
+"""Функции для ввода чисел"""
+def insert0():
+    enter1.insert(END,"0")
+def insert1():
+    enter1.insert(END,"1")
+def insert2():
+    enter1.insert(END,"2")
+def insert3():
+    enter1.insert(END,"3")
+def insert4():
+    enter1.insert(END,"4")
+def insert5():
+    enter1.insert(END,"5")
+def insert6():
+    enter1.insert(END,"6")
+def insert7():
+    enter1.insert(END,"7")
+def insert8():
+    enter1.insert(END,"8")
+def insert9():
+    enter1.insert(END,"9")
+def delete():
+    enter1.delete(0,END)
+def ent1():
+    enter1.insert(END,"9999")
+def cancel_but():
+    atm_screen()
+
+"""Дополнительные функции"""
+
+def dop1():
+    btnemp=Button(frame3, width=300, height=125,image=bez).grid(row=4,column=2,columnspan=2)
+    label9=Label(frame5,height=5,width=30,text="Введите верный pin")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    buttons_on()
+def dop2():
+    btnemp=Button(frame3, width=300, height=125,image=card).grid(row=4,column=2,columnspan=2)
+    frame3.after(1500,dop1)
+def ticket_minus():
+    global ticket
+    global money
+    if ticket==0:
+        label9=Label(frame5,height=5,width=30,text="Все штрафы уже оплачены")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+    elif money-ticket*1000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+    else:
+        label9=Label(frame5,height=5,width=30,text="Ваши штрафы оплачены")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=ticket*1000
+        ticket=0
+def sum1():
+    global money
+    buttons_off()
+    if money-100<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=100
+        enter1.insert(END,"Ваш баланс "+str(money))
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def sum2():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-500<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=500
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def sum3():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-1000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=1000
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+
+def sum4():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-2000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=2000
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+        
+def sum5():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-5000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=5000
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def sum6():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-10000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=10000
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def sum7():
+    global money
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-15000<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=15000
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def enter_get():
+    global money
+    a=enter1.get()
+    buttons_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    if money-int(a)<0:
+        label9=Label(frame5,height=5,width=30,text="Недостаточно средств")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+    else:
+        label9=Label(frame5,height=5,width=30,text="Средства сняты")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        money-=int(a)
+        enter1.insert(END,"Ваш баланс "+str(money))
+        money_ani()
+        btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+def sum8():
+    buttons_on()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    global money
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Введите свою сумму")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    btnent=Button(frame3, width=175, height=125,image=enter,command=enter_get).grid(row=1,column=3)
+
+def call_help():
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Сотрудник банка уже идет к вам")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+
+def inst():
+    msg=""" Справка по функционалу банкомата.
+
+
+
+"""
+    mb.showinfo("Информация", msg)
+    
+def num_check():
+    a=enter1.get()
+    if len(str(a))!=16:
+        enter1.delete(0,END)
+        label9=Label(frame5,height=5,width=30,text="Введен некорркектный номер")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        btnent=Button(frame3, width=175, height=125,image=enter,command=num_check).grid(row=1,column=3)
+    else:
+        enter1.delete(0,END)
+        enter1.insert(END,"Ваш баланс "+str(money))
+        label9=Label(frame5,height=5,width=30,text="Карта найдена. Выберите сумму")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        buttons_off()
+        text_off()
+        arrows_sum()
+
+def promo_info():
+    text_off()
+    buttons_off()
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Промокод находится в подарке")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+
+def promo_check():
+    global promo_use
+    global money
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    a=enter1.get()
+    if int(a)==2022 and promo_use==0:
+        enter1.delete(0,END)
+        label9=Label(frame5,height=5,width=30,text="Вы получили бонусные 1000")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        money+=1000
+        promo_use+=1
+    elif promo_use>0 and int(a)==2022:
+        enter1.delete(0,END)
+        label9=Label(frame5,height=5,width=30,text="Вы уже использовали этот промокод")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+    else:
+        enter1.delete(0,END)
+        label9=Label(frame5,height=5,width=30,text="Неверный промокод")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+def dop3():
+    btntake=Button(frame3, width=450, height=125,image=pust).grid(row=5,column=0,columnspan=4)
+def money_ani():
+    buttons_off()
+    btntake=Button(frame3, width=450, height=125,image=take).grid(row=5,column=0,columnspan=4)
+    frame3.after(1500,dop3)
+
+"""Функции для стрелок"""
+def balance():
+    global money
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    enter1.insert(END,money)
+    arrows_off()
+    text_off()
+    label9=Label(frame5,height=5,width=30,text="Ваш баланс:")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    label1=Label(frame5,text="Вернуться",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=atm_screen).grid(row=0,column=0)
+                                                                                        
+def take_money():
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    enter1.insert(END,"Ваш баланс "+str(money))
+    arrows_off()
+    text_off()
+    label9=Label(frame5,height=5,width=30,text="Выберите сумму")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    arrows_sum()
+    
+def tickets():
+    global ticket
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    arrows_off()
+    text_off()
+    label9=Label(frame5,height=5,width=30,text="Количество штрафов по 1000")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    enter1.insert(END,"Ваше количество штрафов: "+str(ticket))
+    label1=Label(frame5,text="Оплатить",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="Вернуться",width=25,height=3)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=ticket_minus).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow,command=atm_screen).grid(row=1,column=0)
+
+def helpy():
+    text_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Выберите вид нужной помощи")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    label1=Label(frame5,text="Вызов сотрудника",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="Справка",width=25,height=3)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    label3=Label(frame5,text="Вернуться",width=25,height=3)
+    label3.grid(row=3,column=1, padx=5, pady=5)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=call_help).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow,command=inst).grid(row=1,column=0)
+    cbtn7=Button(frame4, width = 120, height=80,image=larrow,command=atm_screen).grid(row=2,column=0)
+
+def move_money():
+    buttons_on()
+    text_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Введите ваш другой счет")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    btnent=Button(frame3, width=175, height=125,image=enter,command=num_check).grid(row=1,column=3)
+
+def promo():
+    buttons_on()
+    text_off()
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    enter1.delete(0,END)
+    label9=Label(frame5,height=5,width=30,text="Введите промокод")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    btnent=Button(frame3, width=175, height=125,image=enter,command=promo_check).grid(row=1,column=3)
+    label1=Label(frame5,text="Где получить",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="Вернуться",width=25,height=3)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=promo_info).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow,command=atm_screen).grid(row=1,column=0)
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+
+def user_change():
+    card_ani()
+    card_ani()
+    enter_pin()
+
+def endy():
+    quit()
+    
+    
+"""Функции для кнопок"""
+
+def buttons_off():
+    """Кнопки нижней панели отключаются"""
+    n1=Button(frame3, width=175, height=125,image=i1).grid(row=0,column=0)
+    btn2=Button(frame3, width=175, height=125,image=i2).grid(row=0,column=1)
+    btn3=Button(frame3, width=175, height=125,image=i3).grid(row=0,column=2)
+    btncan=Button(frame3, width=175, height=125,image=cancel).grid(row=0,column=3)
+    btn4=Button(frame3, width=175, height=125,image=i4).grid(row=1,column=0)
+    btn5=Button(frame3, width=175, height=125,image=i5).grid(row=1,column=1)
+    btn6=Button(frame3, width=175, height=125,image=i6).grid(row=1,column=2)
+    btnent=Button(frame3, width=175, height=125,image=enter).grid(row=1,column=3)
+    btn7=Button(frame3, width=175, height=125,image=i7).grid(row=2,column=0)
+    btn8=Button(frame3, width=175, height=125,image=i8).grid(row=2,column=1)
+    btn9=Button(frame3, width=175, height=125,image=i9).grid(row=2,column=2)
+    btncler=Button(frame3, width=175, height=125,image=clear).grid(row=2,column=3)
+    btnmin=Button(frame3, width=175, height=125,image=empty).grid(row=4,column=0)
+    btn0=Button(frame3, width=175, height=125,image=i0).grid(row=4,column=1)
+    
+    btntake=Button(frame3, width=450, height=125,image=pust).grid(row=5,column=0,columnspan=4)
+
+def buttons_on():
+    """Кнопки нижней панели включаются"""
+    btn1=Button(frame3, width=175, height=125,image=i1,command=insert1).grid(row=0,column=0)
+    btn2=Button(frame3, width=175, height=125,image=i2,command=insert2).grid(row=0,column=1)
+    btn3=Button(frame3, width=175, height=125,image=i3,command=insert3).grid(row=0,column=2)
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    btn4=Button(frame3, width=175, height=125,image=i4,command=insert4).grid(row=1,column=0)
+    btn5=Button(frame3, width=175, height=125,image=i5,command=insert5).grid(row=1,column=1)
+    btn6=Button(frame3, width=175, height=125,image=i6,command=insert6).grid(row=1,column=2)
+    btnent=Button(frame3, width=175, height=125,image=enter,command=enter_pin).grid(row=1,column=3)
+    btn7=Button(frame3, width=175, height=125,image=i7,command=insert7).grid(row=2,column=0)
+    btn8=Button(frame3, width=175, height=125,image=i8,command=insert8).grid(row=2,column=1)
+    btn9=Button(frame3, width=175, height=125,image=i9,command=insert9).grid(row=2,column=2)
+    btncler=Button(frame3, width=175, height=125,image=clear,command=delete).grid(row=2,column=3)
+    btnmin=Button(frame3, width=175, height=125,image=empty).grid(row=4,column=0)
+    
+    btn0=Button(frame3, width=175, height=125,image=i0,command=insert0).grid(row=4,column=1)
+    
+
+def arrows_off():
+    """Кнопки боковой панели отключаются"""
+    cbtn1=Button(frame6,width = 120, height=80,image=rarrow).grid(row=0,column=0)
+    cbtn2=Button(frame6,width = 120, height=80,image=rarrow).grid(row=1,column=0)
+    cbtn3=Button(frame6,width = 120, height=80,image=rarrow).grid(row=2,column=0)
+    cbtn4=Button(frame6,width = 120, height=80,image=rarrow).grid(row=3,column=0)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow).grid(row=1,column=0)
+    cbtn7=Button(frame4,width = 120, height=80,image=larrow).grid(row=2,columnspan=2,sticky="EW")
+    cbtn8=Button(frame4,width = 120, height=80,image=larrow).grid(row=3,columnspan=3,sticky="EW")
+
+def arrows_sum():
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=cancel_but).grid(row=0,column=3)
+    label1=Label(frame5,text="100",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="500",height=4,width=25)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    label3=Label(frame5,text="1000",height=4,width=25)
+    label3.grid(row=3,column=1, padx=5, pady=5)
+    label4=Label(frame5,text="2000",height=4,width=25)
+    label4.grid(row=4,column=1, padx=5, pady=5)
+    label5=Label(frame5,text="5000",height=4,width=25)
+    label5.grid(row=1,column=3, padx=5, pady=5)
+    label6=Label(frame5,text="10000",height=4,width=25)
+    label6.grid(row=2,column=3, padx=5, pady=5)
+    label7=Label(frame5,text="15000",height=4,width=25)
+    label7.grid(row=3,column=3, padx=5, pady=5)
+    label8=Label(frame5,text="Своя сумма",height=5,width=25)
+    label8.grid(row=4,column=3, padx=5, pady=5)
+    cbtn1=Button(frame6,width = 120, height=80,image=rarrow,command=sum5).grid(row=0,column=0)
+    cbtn2=Button(frame6,width = 120, height=80,image=rarrow,command=sum6).grid(row=1,column=0)
+    cbtn3=Button(frame6,width = 120, height=80,image=rarrow,command=sum7).grid(row=2,column=0)
+    cbtn4=Button(frame6,width = 120, height=80,image=rarrow,command=sum8).grid(row=3,column=0)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=sum1).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow,command=sum2).grid(row=1,column=0)
+    cbtn7=Button(frame4,width = 120, height=80,image=larrow,command=sum3).grid(row=2,columnspan=2,sticky="EW")
+    cbtn8=Button(frame4,width = 120, height=80,image=larrow,command=sum4).grid(row=3,columnspan=3,sticky="EW")
+
+    
+
+def atm_screen():
+
+    label9=Label(frame5,height=5,width=30,text="Здравствуйте! Выберите операцию")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    enter1.delete(0,END)
+    enter1.insert(END,"Выберете операцию боковой кнопкой")
+
+    a=buttons_off()
+
+    """Стрелки получают операцию"""
+            
+    cbtn1=Button(frame6,width = 120, height=80,image=rarrow,command=move_money).grid(row=0,column=0)
+    cbtn2=Button(frame6,width = 120, height=80,image=rarrow,command=promo).grid(row=1,column=0)
+    cbtn3=Button(frame6,width = 120, height=80,image=rarrow,command=user_change).grid(row=2,column=0)
+    cbtn4=Button(frame6,width = 120, height=80,image=rarrow,command=endy).grid(row=3,column=0)
+    cbtn5=Button(frame4, width = 120, height=80,image=larrow,command=balance).grid(row=0,column=0)
+    cbtn6=Button(frame4, width = 120, height=80,image=larrow,command=take_money).grid(row=1,column=0)
+    cbtn7=Button(frame4,width = 120, height=80,image=larrow,command=tickets).grid(row=2,columnspan=2,sticky="EW")
+    cbtn8=Button(frame4,width = 120, height=80,image=larrow,command=helpy).grid(row=3,columnspan=3,sticky="EW")
+    btncan=Button(frame3, width=175, height=125,image=cancel,command=enter_pin).grid(row=0,column=3)
+
+
+    label1=Label(frame5,text="Проверить баланс",width=25,height=3)
+    label1.grid(row=1,column=1, padx=5, pady=5)
+    label2=Label(frame5,text="Получить деньги",height=4,width=25)
+    label2.grid(row=2,column=1, padx=5, pady=5)
+    label3=Label(frame5,text="Оплата штрафов",height=4,width=25)
+    label3.grid(row=3,column=1, padx=5, pady=5)
+    label4=Label(frame5,text="Помощь",height=4,width=25)
+    label4.grid(row=4,column=1, padx=5, pady=5)
+    label5=Label(frame5,text="Получение с другого счета",height=4,width=25)
+    label5.grid(row=1,column=3, padx=5, pady=5)
+    label6=Label(frame5,text="Ввести промокод",height=4,width=25)
+    label6.grid(row=2,column=3, padx=5, pady=5)
+    label7=Label(frame5,text="Смена пользователя",height=4,width=25)
+    label7.grid(row=3,column=3, padx=5, pady=5)
+    label8=Label(frame5,text="Отключение банкомата",height=5,width=25)
+    label8.grid(row=4,column=3, padx=5, pady=5)
+
+def enter_pin():
+    label9=Label(frame5,height=5,width=30,text="Введите верный pin: ")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    text_off()
+    arrows_off()
+    buttons_on()
+    a=enter1.get()
+    if a=="4534":
+        atm_screen()
+
+
+    else:
+        label9=Label(frame5,height=5,width=30,text="Введите верный pin")
+        label9.grid(row=1,column=2, padx=5, pady=5)
+        enter1.delete(0,END)
+        btncan=Button(frame3, width=175, height=125,image=cancel).grid(row=0,column=3)
+
+arrows_off()
+buttons_off()
+btncan=Button(frame3, width=175, height=125,image=cancel).grid(row=0,column=3)
+
+def card_ani():
+    label9=Label(frame5,height=5,width=30,text="Вставляется карта")
+    label9.grid(row=1,column=2, padx=5, pady=5)
+    btnemp=Button(frame3, width=300, height=125,image=bez).grid(row=4,column=2,columnspan=2)
+    frame3.after(1500,dop2)
+    
+card_ani()
+
+
+root.mainloop()
